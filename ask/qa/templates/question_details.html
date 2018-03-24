@@ -1,0 +1,10 @@
+{% extends 'main.html' %}
+
+{% block content %}
+    <h1>{{ question }}</h1>
+    <p>{{ question.text }}</p>
+
+    {% for answer in answers %}
+        {{ answer }}
+    {% endfor %}
+{% endblock %}

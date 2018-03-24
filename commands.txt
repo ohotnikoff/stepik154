@@ -1,0 +1,5 @@
+sudo /etc/init.d/mysql start
+mysql -uroot -e "create database ask"
+#python manage.py makemigrations
+cd ask
+python manage.py migrate
