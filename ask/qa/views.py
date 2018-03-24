@@ -8,7 +8,7 @@ from qa.models import Question, Answer
 # Create your views here.
 @require_GET
 def questions_new(request):
-    questions = Question.new()
+    questions = Question.objects.new()
     limit = 10
     try:
         page = int(request.GET.get('page', 1))
@@ -25,7 +25,7 @@ def questions_new(request):
 
 @require_GET
 def questions_popular(request):
-    questions = Question.popular()
+    questions = Question.objects.popular()
     limit = 10
     try:
         page = int(request.GET.get('page', 1))

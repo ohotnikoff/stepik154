@@ -4,7 +4,9 @@
     <h1>{{ question }}</h1>
     <p>{{ question.text }}</p>
 
+    <ul>
     {% for answer in answers %}
-        {{ answer }}
+        <li>{{ answer }}</li>
     {% endfor %}
+    </ul>
 {% endblock %}
