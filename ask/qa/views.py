@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.core.paginator import Paginator
 from django.views.decorators.http import require_GET
 from django.core.urlresolvers import reverse
 from qa.models import Question, Answer
+from qa.forms import AskForm, AnswerForm
 
 # Create your views here.
 @require_GET
@@ -40,9 +41,17 @@ def questions_popular(request):
         'page': page,
     })
 
-@require_GET
 def question_details(request, id):
     question = get_object_or_404(Question, id=id)
+    if request.method == "POST":
+        form = AnswerForm(question, request.POST)
+        if form.is_valid():
+            form.save()
+            url = question.get_url()
+            return HttpResponseRedirect(url)
+    else:
+        form = AnswerForm(question)
+
     try:
         answers = Answer.objects.filter(question=question)
     except Answer.DoesNotExist:
@@ -50,6 +59,20 @@ def question_details(request, id):
     return render(request, 'question_details.html', {
         'question': question,
         'answers': answers,
+        'form': form,
+    })
+
+def ask_form(request):
+    if request.method == "POST":
+        form = AskForm(request.POST)
+        if form.is_valid():
+            question = form.save()
+            url = question.get_url()
+            return HttpResponseRedirect(url)
+    else:
+        form = AskForm()
+    return render(request, 'ask_form.html', {
+        'form': form,
     })
 
 def test(request, *args, **kwargs):
