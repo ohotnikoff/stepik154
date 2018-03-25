@@ -44,13 +44,13 @@ def questions_popular(request):
 def question_details(request, id):
     question = get_object_or_404(Question, id=id)
     if request.method == "POST":
-        form = AnswerForm(question, request.POST)
+        form = AnswerForm(request.POST)
         if form.is_valid():
             form.save()
             url = question.get_url()
             return HttpResponseRedirect(url)
     else:
-        form = AnswerForm(question)
+        form = AnswerForm()
 
     try:
         answers = Answer.objects.filter(question=question)
