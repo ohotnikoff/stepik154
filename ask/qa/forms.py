@@ -5,6 +5,9 @@ class AskForm(forms.Form):
     title = forms.CharField(max_length=255)
     text = forms.CharField(widget=forms.Textarea)
 
+    def clean(self):
+        pass
+
     def save(self):
         question = Question(**self.cleaned_data)
         question.save()
@@ -13,13 +16,20 @@ class AskForm(forms.Form):
 
 class AnswerForm(forms.Form):
     text = forms.CharField(widget=forms.Textarea)
+    question = forms.IntegerField(widget=forms.HiddenInput)
 
-    def __init__(self, question, **kwargs):
-        self._question = question
-        super(AnswerForm, self).__init__(*kwargs)
+    def clean_question(self):
+        question_id = self.cleaned_data['question']
+        try:
+            question = Question.objects.get(id=question_id)
+        except Question.DoesNotExist:
+            question = None
+        return question
+
+    def clean(self):
+        pass
 
     def save(self):
-        self.cleaned_data['question'] = self._question
         answer = Answer(**self.cleaned_data)
         answer.save()
         return answer
