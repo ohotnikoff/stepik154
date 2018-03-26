@@ -50,6 +50,7 @@ def question_details(request, id):
     if request.method == "POST":
         form = AnswerForm(request.POST)
         if form.is_valid():
+            form._user = request.user
             form.save()
             url = question.get_url()
             return HttpResponseRedirect(url)
@@ -70,6 +71,7 @@ def ask_form(request):
     if request.method == "POST":
         form = AskForm(request.POST)
         if form.is_valid():
+            form._user = request.user
             question = form.save()
             url = question.get_url()
             return HttpResponseRedirect(url)
