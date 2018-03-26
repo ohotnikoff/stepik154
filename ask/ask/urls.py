@@ -20,8 +20,8 @@ from qa import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.questions_new, name='new'),
-    url(r'^login/$', views.test),
-    url(r'^signup/$', views.test),
+    url(r'^login/$', views.login, name='login'),
+    url(r'^signup/$', views.signup, name='signup'),
     url(r'^question/(?P<id>[0-9]+)/$', views.question_details, name='question'),
     url(r'^ask/$', views.ask_form, name='ask'),
     url(r'^popular/$', views.questions_popular, name='popular'),
